@@ -52,12 +52,12 @@ game_state_t *create_default_state() {
     }
     // and num_snakes and snakes makes another array
     game_state->num_snakes = 1u;
-    game_state->snakes = malloc(sizeof(snake_t *) * game_state->num_snakes);
-    game_state->snakes->live = true;
-    game_state->snakes->head_row = 2u;
-    game_state->snakes->head_col = 4u;
-    game_state->snakes->tail_row = 2u;
-    game_state->snakes->tail_col = 2u;
+    game_state->snakes = malloc(sizeof(snake_t) * game_state->num_snakes);
+    game_state->snakes[0].live = true;
+    game_state->snakes[0].head_row = 2u;
+    game_state->snakes[0].head_col = 4u;
+    game_state->snakes[0].tail_row = 2u;
+    game_state->snakes[0].tail_col = 2u;
 
     return game_state;
 }
@@ -65,6 +65,18 @@ game_state_t *create_default_state() {
 /* Task 2 */
 void free_state(game_state_t *state) {
     // TODO: Implement this function.
+    // free board
+    for (int i = 0; i < state->num_rows; i++) {
+        free(state->board[i]);
+        state->board[i] = NULL;
+    }
+    free(state->board);
+    state->board = NULL;
+    // free snakes
+    free(state->snakes);
+    state->snakes = NULL;
+
+    // free state
     free(state);
     state = NULL;
     return;
